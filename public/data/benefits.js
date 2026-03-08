@@ -512,6 +512,393 @@ const BENEFITS = [
       a.income_monthly <= 5400,
   },
 
+  // ─── ADDITIONAL MARYLAND STATE PROGRAMS ──────────────────────────────────
+
+  {
+    id: "community_first_choice",
+    name: "Community First Choice (CFC)",
+    category: "home_care",
+    type: "state",
+    description: "Maryland Medicaid program providing personal care and home support services to adults who need nursing-facility-level care but want to remain at home or in the community. No waitlist — anyone who qualifies is enrolled.",
+    amount: "Full personal care and homemaker services — no dollar cap. Value depends on assessed need.",
+    nuances: [
+      "NO WAITLIST — unlike the Community Options Waiver, CFC has no cap on enrollment. Anyone who meets eligibility can receive services immediately.",
+      "Income limit: $350/month for a single individual (same as Medicaid ABD group, effective Feb 2026). However, income exceptions and spend-down pathways exist.",
+      "Must require nursing facility level of care, assessed through the interRAI Home Care tool.",
+      "Must be enrolled in Maryland Medicaid (HealthChoice).",
+      "Services covered: personal care assistance (bathing, dressing, toileting, eating, mobility), homemaker services (meal prep, light housekeeping, laundry), personal emergency response systems (PERS), home accessibility modifications, and delivery of prepared meals.",
+      "Participant-directed option available — unlike the Community Options Waiver, CFC DOES allow you to hire and direct your own caregivers, including family members in some cases.",
+      "Also available: Community Personal Assistance Services (CPAS) — another no-waitlist personal care program for people who do not need nursing-facility level of care but need assistance with daily living.",
+      "Apply through Maryland Access Point: 1-844-MAP-LINK (1-844-627-5465) or your local health department.",
+      "If you are on the Community Options Waiver waitlist, ask about CFC as an immediate alternative."
+    ],
+    how_to_apply: "Apply through Maryland Medicaid at marylandhealthconnection.gov or call Maryland Access Point: 1-844-627-5465. Contact Maryland Department of Health: 410-767-6500 or 1-877-463-3464.",
+    apply_url: "https://health.maryland.gov/mmcp/longtermcare/pages/community-first-choice.aspx",
+    source: "health.maryland.gov/mmcp, medicaid.gov — verified March 2026",
+    eligibility: (a) =>
+      a.is_maryland_resident &&
+      a.needs_daily_living_assistance &&
+      a.income_monthly <= 2500, // spend-down exceptions exist
+  },
+
+  {
+    id: "brain_injury_waiver",
+    name: "Brain Injury Waiver (BIW)",
+    category: "home_care",
+    type: "state",
+    description: "Maryland Medicaid waiver providing home and community-based services to adults ages 22–64 with an acquired brain injury who require nursing-facility-level care. Allows transition from institutional settings to community living.",
+    amount: "Comprehensive community-based services including housing, employment support, and day programs — value varies by care plan.",
+    nuances: [
+      "Age requirement: 22 to 64 years old.",
+      "Brain injury must have been acquired (not congenital) and sustained after age 17.",
+      "Covered conditions: traumatic brain injury (TBI), stroke, anoxic/hypoxic brain injury, brain tumor complications, and other acquired brain injuries resulting in cognitive, physical, behavioral, or emotional disability.",
+      "Income limit: ≤$2,742/month (300% of SSI Federal Benefit Rate).",
+      "Asset limit: ≤$2,000.",
+      "Medical requirement: must require nursing facility or chronic hospital level of care; medical conditions must be chronic, predictable, stable, and routine.",
+      "Six covered services: (1) Residential Habilitation — 24-hour supervised group home, 1:3 staff ratio; (2) Day Habilitation — skill-building in community settings; (3) Supported Employment — job training and ongoing supervision; (4) Medical Day Care — health-supervised ambulatory services; (5) Individual Support Services — community participation assistance; (6) Case Management — coordination of all services.",
+      "2025 amendment expanded access from state nursing facilities to include private nursing facilities — this is a recent significant change.",
+      "Submit an interest form through the Brain Injury Association of Maryland (BIAMD) to begin the process.",
+      "Contact BIAMD at 410-448-2924 or [email protected]"
+    ],
+    how_to_apply: "Submit an interest form at the Brain Injury Association of Maryland: biamd.org or call 410-448-2924. MDH Program Coordinator: [email protected]",
+    apply_url: "https://www.biamd.org/brain-injury-wavier-program.html",
+    source: "biamd.org, health.maryland.gov/mmcp — verified March 2026",
+    eligibility: (a) =>
+      a.is_maryland_resident &&
+      a.age >= 22 && a.age <= 64 &&
+      a.has_brain_injury &&
+      a.income_monthly <= 2742 &&
+      a.assets <= 2000 &&
+      a.needs_daily_living_assistance,
+  },
+
+  {
+    id: "maryland_bha_mental_health",
+    name: "Maryland Medicaid Behavioral Health Services",
+    category: "healthcare",
+    type: "state",
+    description: "Maryland Medicaid covers a comprehensive range of mental health and substance use disorder services for enrolled individuals. Managed statewide by Carelon Behavioral Health (as of January 2025), replacing Optum.",
+    amount: "Fully covered under Medicaid — no cost or low cost to enrolled members.",
+    nuances: [
+      "Must be enrolled in Maryland Medicaid (HealthChoice) to access these services.",
+      "Covered mental health services: outpatient therapy, psychiatric evaluations, medication management, psychiatric rehabilitation, intensive outpatient programs (IOP), crisis intervention (including 24/7 crisis lines), mobile crisis teams, and inpatient psychiatric care.",
+      "Substance use disorder services: detoxification, residential treatment, intensive outpatient treatment, medication-assisted treatment (MAT/buprenorphine/methadone), and recovery support.",
+      "Behavioral health is carved out of HealthChoice managed care plans — you go through Carelon Behavioral Health separately, not your primary HealthChoice plan.",
+      "To find a covered behavioral health provider: call Carelon at 1-800-888-1965 or visit maryland.carelonbh.com.",
+      "Crisis services: Maryland Crisis Hotline 988 (Suicide & Crisis Lifeline), available 24/7 — no insurance required.",
+      "Children's services: Therapeutic Behavioral Services (TBS) for children with mental illness or developmental disabilities — provided in home and community settings.",
+      "Provider enrollment moratorium: new Medicaid behavioral health provider enrollments are paused January 1–June 30, 2026 — existing providers continue serving patients.",
+      "Serious Mental Illness (SMI): individuals with SMI are a priority population and may access additional community support services."
+    ],
+    how_to_apply: "Apply for Medicaid at marylandhealthconnection.gov. For behavioral health services: call Carelon at 1-800-888-1965. Crisis: call or text 988.",
+    apply_url: "https://health.maryland.gov/bha/pages/index.aspx",
+    source: "health.maryland.gov/bha, health.maryland.gov/mmcp — verified March 2026",
+    eligibility: (a) =>
+      a.is_maryland_resident &&
+      (a.has_mental_health || a.has_disability) &&
+      a.income_monthly <= 1835,
+  },
+
+  // ─── FEDERAL VETERAN PROGRAMS ─────────────────────────────────────────────
+
+  {
+    id: "va_disability_compensation",
+    name: "VA Disability Compensation",
+    category: "income",
+    type: "federal",
+    description: "Monthly tax-free payments for veterans with service-connected disabilities. Rating from 0–100% determines payment amount. Maryland does not tax VA disability compensation — it is fully state tax-exempt.",
+    amount: "2025 monthly rates: 10% = $175.51; 30% = $508.05; 50% = $1,075.16; 70% = $1,716.28; 100% = $3,831.30. Rates increase with dependents.",
+    nuances: [
+      "Disability must be connected to military service — injury, illness, or condition that began or worsened during active duty.",
+      "Rating is based on VA Schedule for Rating Disabilities (VASRD). Multiple ratings are combined using the 'whole person' method.",
+      "Individual Unemployability (IU): if your service-connected disability prevents you from maintaining substantially gainful employment, you may receive compensation at the 100% rate even if your combined rating is less than 100%.",
+      "Fully tax-exempt in Maryland — not subject to federal income tax, Maryland income tax, or Social Security tax.",
+      "SSDI and VA compensation can be received simultaneously.",
+      "Maryland does NOT offset VA compensation from state pension or other benefits.",
+      "Apply with help from a free VA-accredited Benefits Services Specialist at the Maryland Department of Veterans and Military Families — no cost.",
+      "Specially Adapted Housing (SAH) and Special Home Adaptation (SHA) grants: veterans with service-connected disabilities affecting mobility can receive grants up to $117,014 (SAH) or $23,444 (SHA) for home modifications.",
+      "Veterans in Maryland rated 70%+ who need nursing home care are entitled to nursing home care at VA expense — Charlotte Hall Veterans Home accepts eligible Maryland veterans."
+    ],
+    how_to_apply: "Apply at va.gov/disability or visit a Maryland VA office. Free assistance: Maryland Department of Veterans & Military Families at veterans.maryland.gov, 1-800-446-4926.",
+    apply_url: "https://www.va.gov/disability/",
+    source: "va.gov, veterans.maryland.gov — verified March 2026",
+    eligibility: (a) =>
+      a.is_veteran && a.has_service_connected_disability,
+  },
+
+  {
+    id: "md_veterans_property_tax",
+    name: "Maryland Veterans Property Tax Exemption",
+    category: "housing",
+    type: "state",
+    description: "Complete exemption from Maryland real property taxes on your home for veterans with a 100% total and permanent (or unemployable) service-connected disability rating from the VA.",
+    amount: "Full property tax exemption — value depends on your property's assessed value. Can save thousands of dollars per year.",
+    nuances: [
+      "Requires 100% total and permanent OR Individual Unemployability (IU) rating from VA.",
+      "Applies only to primary residence (home and surrounding yard).",
+      "Surviving spouses of eligible veterans retain the exemption if they do not remarry.",
+      "Surviving spouses of service members killed in the line of duty also qualify.",
+      "Must apply through your county's Department of Assessments and Taxation.",
+      "Exemption is retroactive to the date of your 100% rating — you may receive a refund of taxes paid after your rating date.",
+      "Does not apply to commercial property, rental property, or secondary homes."
+    ],
+    how_to_apply: "Apply through your local Maryland Department of Assessments and Taxation office. Bring your VA rating letter. Contact: dat.maryland.gov or call 410-767-1184.",
+    apply_url: "https://dat.maryland.gov/Pages/default.aspx",
+    source: "veterans.maryland.gov — verified March 2026",
+    eligibility: (a) =>
+      a.is_veteran &&
+      a.is_maryland_resident &&
+      a.is_homeowner &&
+      a.has_100_percent_va_rating,
+  },
+
+  {
+    id: "conroy_scholarship",
+    name: "Edward T. Conroy & Jean B. Cryor Memorial Scholarship",
+    category: "employment",
+    type: "state",
+    description: "Maryland state scholarship for disabled veterans and dependents of killed-in-action or 100% disabled veterans. Covers tuition at any Maryland public or private college, university, or career school.",
+    amount: "Up to $13,689 per year (2025–2026). Cannot exceed cost of attendance or $32,200 total aid.",
+    nuances: [
+      "Eligible populations: (1) Veterans with a service-connected disability of 25% or greater who have exhausted all federal veterans' educational benefits; (2) children/stepchildren/surviving spouses of veterans who are 100% disabled as a direct result of military service; (3) children of POW/MIA personnel from Vietnam era; (4) surviving spouses of 9/11 victims; (5) public safety employees who are 100% disabled in the line of duty.",
+      "Must be a Maryland resident at time of application (exception: dependents of Maryland public safety employees killed in the line of duty).",
+      "Award is based on enrollment status (full-time vs part-time) and cost of tuition and mandatory fees.",
+      "Can be used at any Maryland community college, 4-year university, or career school.",
+      "Deadline: July 15 each year for the following academic year.",
+      "Apply through the Maryland Higher Education Commission (MHEC) Office of Student Financial Assistance.",
+      "Contact: 410-767-3300 or [email protected]"
+    ],
+    how_to_apply: "Apply through MHEC: mhec.maryland.gov or email [email protected]. Deadline: July 15 annually. Contact: 410-767-3300.",
+    apply_url: "https://mhec.maryland.gov/preparing/pages/financialaid/programdescriptions/prog_conroy.aspx",
+    source: "mhec.maryland.gov — verified March 2026",
+    eligibility: (a) =>
+      a.is_maryland_resident &&
+      a.is_veteran &&
+      (a.has_service_connected_disability || a.has_100_percent_va_rating) &&
+      a.wants_to_work, // proxy for education/employment goals
+  },
+
+  {
+    id: "charlotte_hall_veterans_home",
+    name: "Charlotte Hall Veterans Home",
+    category: "housing",
+    type: "state",
+    description: "Maryland-operated assisted living and skilled nursing facility exclusively for eligible Maryland veterans and their spouses. Provides long-term care, memory care, rehabilitation, and full medical staffing.",
+    amount: "Veterans rated 70%+ with service-connected disability: VA covers full nursing home cost (~$4,536/month savings at $148.71/day VA rate). Others pay on a sliding scale based on income.",
+    nuances: [
+      "Requires honorable or general discharge from U.S. military service.",
+      "Must be a Maryland resident.",
+      "Services: skilled nursing care, assisted living, memory care, physical/occupational/speech therapy, social services, recreational programs.",
+      "Veterans rated 70%+ with a service-connected disability are entitled to nursing home care at VA expense under the Veterans Millennium Healthcare Act.",
+      "VA per diem rate for nursing home care: $148.71/day as of October 1, 2025 ($4,535.66/month).",
+      "For veterans not at 70%+ service-connected: cost is income-based; Medicaid may be accepted.",
+      "Spouses of eligible veterans may also be admitted.",
+      "Located in Charlotte Hall, MD (Southern Maryland). The only state-veterans-specific long-term care facility in Maryland."
+    ],
+    how_to_apply: "Contact Charlotte Hall Veterans Home directly: 301-884-8171. Or contact the Maryland Department of Veterans and Military Families: veterans.maryland.gov, 1-800-446-4926.",
+    apply_url: "https://veterans.maryland.gov/Benefits/Healthcare/Pages/Assisted-Living-and-Skilled-Nursing-Facility.aspx",
+    source: "veterans.maryland.gov — verified March 2026",
+    eligibility: (a) =>
+      a.is_veteran &&
+      a.is_maryland_resident &&
+      a.needs_assisted_living,
+  },
+
+  {
+    id: "md_veterans_vehicle",
+    name: "Maryland Veterans Vehicle Registration Benefits",
+    category: "transportation",
+    type: "state",
+    description: "Maryland veterans with service-connected disability ratings receive reduced or free vehicle registration. 100% disabled veterans receive completely free registration annually.",
+    amount: "100% service-connected disabled: free vehicle registration (one vehicle). 50–99% disabled: free license plate, standard registration fees still apply.",
+    nuances: [
+      "100% service-connected (total and permanent or IU): one free vehicle registration per year, renewed annually at no cost.",
+      "50–99% service-connected: free disability license plate, but standard annual/biennial registration fees and surcharges still apply.",
+      "Apply through the Maryland Motor Vehicle Administration (MVA) with a copy of your VA rating letter.",
+      "Only applies to one vehicle.",
+      "100% disabled veterans also eligible for complimentary lifetime hunting and fishing license including trout stamp, muzzleloader stamp, and bow stamp."
+    ],
+    how_to_apply: "Apply at any Maryland MVA office with your VA rating letter. MVA: mva.maryland.gov or call 410-768-7000.",
+    apply_url: "https://mva.maryland.gov/",
+    source: "veterans.maryland.gov — verified March 2026",
+    eligibility: (a) =>
+      a.is_veteran &&
+      a.is_maryland_resident &&
+      a.has_service_connected_disability,
+  },
+
+  // ─── DISEASE-SPECIFIC NATIONAL FOUNDATIONS (SERVING MARYLAND) ─────────────
+
+  {
+    id: "akf_safety_net",
+    name: "American Kidney Fund — Safety Net Grant",
+    category: "grants",
+    type: "nonprofit",
+    description: "Annual financial assistance grant for people in Maryland on dialysis or living with a kidney transplant. Maryland, DC, and Virginia residents receive a higher grant amount than the national average due to regional funding support.",
+    amount: "$300 per year for Maryland residents (increased from $250 due to Schattner Foundation gift). National average for other states: $200/year.",
+    nuances: [
+      "Must be on dialysis OR have received a kidney transplant.",
+      "Living kidney donors are also eligible for assistance covering travel, lodging, and lost wages during the donation/transplant process.",
+      "Grant covers: transportation to dialysis or medical appointments, prescription copays, medical supplies, food, rent, and utilities.",
+      "Payment delivered via debit card or direct deposit.",
+      "Apply through the social worker at your dialysis center — this is the most common and fastest route.",
+      "Can also apply directly: call 800-795-3226 or use the online Grants Management System at gms.kidneyfund.org.",
+      "No stated income limit — verify current eligibility criteria when applying.",
+      "Headquartered in Rockville, Maryland — the American Kidney Fund is one of the largest kidney disease organizations in the U.S."
+    ],
+    how_to_apply: "Contact the social worker at your dialysis center, call 800-795-3226, or apply online at gms.kidneyfund.org.",
+    apply_url: "https://www.kidneyfund.org/get-assistance/safety-net-grants",
+    source: "kidneyfund.org — verified March 2026",
+    eligibility: (a) =>
+      a.is_maryland_resident &&
+      a.has_kidney_disease,
+  },
+
+  {
+    id: "pan_foundation",
+    name: "PAN Foundation — Disease-Specific Medication Assistance",
+    category: "healthcare",
+    type: "nonprofit",
+    description: "Patient assistance grants for medication copays, insurance premiums, and transportation for people with 80+ serious, chronic, and rare diseases. Income-based; Maryland residents eligible for all national funds.",
+    amount: "Varies by disease fund — typically $500 to $8,000+ per year. Example: myeloproliferative neoplasms fund provides up to $8,000/year. Covers a 12-month period.",
+    nuances: [
+      "Covers 80+ diseases including cancer types, MS, Crohn's disease, rheumatoid arthritis, lupus, heart failure, diabetes complications, rare diseases, and more.",
+      "Must have health insurance that covers your qualifying medication — insurance is required.",
+      "Income limit: varies by disease fund — check your specific fund at panfoundation.org/find-disease-fund.",
+      "Covers: prescription copays, insurance premium assistance, and transportation to treatment.",
+      "Funds open and close based on available funding — check availability before applying.",
+      "Apply online or call 1-866-316-7263, Monday–Friday 9am–5:30pm ET.",
+      "If your PAN fund is closed, also check HealthWell Foundation and NeedyMeds as alternatives.",
+      "Headquartered in Washington, DC — serves all 50 states including Maryland."
+    ],
+    how_to_apply: "Apply at panfoundation.org or call 1-866-316-7263. Find your disease fund first at panfoundation.org/find-disease-fund.",
+    apply_url: "https://www.panfoundation.org/",
+    source: "panfoundation.org — verified March 2026",
+    eligibility: (a) =>
+      a.has_disability &&
+      a.has_insurance,
+  },
+
+  {
+    id: "healthwell_foundation",
+    name: "HealthWell Foundation — Chronic Illness Premium & Copay Assistance",
+    category: "healthcare",
+    type: "nonprofit",
+    description: "Grants for people with chronic or life-altering diseases to help pay insurance premiums, prescription copays, pediatric treatment costs, and behavioral health services. Accepts patients up to 400–500% of the federal poverty level.",
+    amount: "$100 to $10,000+ per year depending on the disease fund. Grants cover a rolling 12-month period.",
+    nuances: [
+      "Income limit: up to 400–500% of the Federal Poverty Level (2026: ~$60,000–$75,000 for an individual) — significantly higher than most programs.",
+      "Must have active health insurance (private, Medicare, Medicaid, TRICARE) that covers part of your treatment cost.",
+      "Drug discount cards do not qualify as insurance.",
+      "Covers: prescription drug copays, health insurance premiums, pediatric treatment, behavioral health services, vitamins/supplements (for covered conditions), and travel to treatment.",
+      "Disease funds include: MS, lupus, rheumatoid arthritis, cancer (multiple types), heart failure, Crohn's, COPD, HIV/AIDS, and many others — see full list at healthwellfoundation.org/disease-funds.",
+      "Application takes under 10 minutes online.",
+      "Reapply each year if funds remain available.",
+      "If your HealthWell fund is closed, check PAN Foundation and NeedyMeds.",
+      "Headquartered in Germantown, Maryland — founded to serve patients nationally."
+    ],
+    how_to_apply: "Apply online at healthwellfoundation.org/patients/apply or call 800-675-8416, Monday–Friday 9am–5pm ET.",
+    apply_url: "https://www.healthwellfoundation.org/",
+    source: "healthwellfoundation.org — verified March 2026",
+    eligibility: (a) =>
+      a.has_disability &&
+      a.has_insurance &&
+      a.income_monthly <= 6000,
+  },
+
+  {
+    id: "ms_foundation_emergency",
+    name: "MS Focus Foundation — Emergency Assistance Grants",
+    category: "grants",
+    type: "nonprofit",
+    description: "Multiple financial assistance programs for people diagnosed with multiple sclerosis, including emergency rent/utility assistance, homecare grants, assistive technology funding, computer grants, transportation assistance, and healthcare grants.",
+    amount: "Varies by program. Emergency assistance for rent/utilities: amounts not publicly stated — determined case by case. Assistive technology grants up to $1,000.",
+    nuances: [
+      "Must have a confirmed diagnosis of multiple sclerosis.",
+      "Programs offered: (1) Emergency Assistance Grant — rent or utility bill help; (2) Healthcare Assistance Grant — helps uninsured individuals visit healthcare providers; (3) Homecare Assistance Grant — homecare, caregiver respite, and therapy; (4) Assistive Technology Program — funding for devices that help people with MS; (5) Computer Program — laptop or desktop for individuals with MS on limited budgets; (6) Transportation Assistance Grant — supports access to appointments and independence.",
+      "Income limits apply — not publicly specified; determined during application review.",
+      "Contact MS Focus directly to discuss eligibility before applying.",
+      "National MS Society also provides complementary resources — MS Navigators at 1-800-344-4867 can help identify all available funding.",
+      "Maryland MS patients can also contact the National MS Society Maryland chapter."
+    ],
+    how_to_apply: "Apply at msfocus.org/Get-Help or call 888-673-6287. National MS Society MS Navigators: 1-800-344-4867.",
+    apply_url: "https://msfocus.org/Get-Help.aspx",
+    source: "msfocus.org — verified March 2026",
+    eligibility: (a) =>
+      a.is_maryland_resident &&
+      a.has_ms,
+  },
+
+  {
+    id: "epilepsy_foundation_md",
+    name: "Epilepsy Foundation Maryland — Scholarship & Support",
+    category: "grants",
+    type: "nonprofit",
+    description: "The Epilepsy Foundation Maryland provides the Ira Rosenzweig Memorial Scholarship for students with epilepsy, plus local support services including advocacy, education, and connection to financial assistance resources.",
+    amount: "Ira Rosenzweig Memorial Scholarship: up to $4,000 per year for undergraduate tuition at a 2-year college, 4-year college, or trade/technical school.",
+    nuances: [
+      "Scholarship requires: diagnosis of epilepsy, enrollment in an accredited Maryland-based or U.S. educational institution.",
+      "For undergraduate students — does not cover graduate-level tuition.",
+      "Additional support services: seizure first aid training, support groups, advocacy resources, and connection to Social Security and employment assistance.",
+      "Epilepsy Foundation also provides information on SUDEP (Sudden Unexpected Death in Epilepsy) resources and seizure management.",
+      "Anti-seizure medication assistance: connect through PAN Foundation and NeedyMeds for medication copay help.",
+      "Contact the Maryland chapter at 1-888-332-5764 or epilepsy.com/local/maryland."
+    ],
+    how_to_apply: "Contact Epilepsy Foundation Maryland: 1-888-332-5764 or visit epilepsy.com/local/maryland for scholarship applications and local support.",
+    apply_url: "https://www.epilepsy.com/local/maryland",
+    source: "epilepsy.com — verified March 2026",
+    eligibility: (a) =>
+      a.is_maryland_resident &&
+      a.has_epilepsy,
+  },
+
+  {
+    id: "medicare_extra_help",
+    name: "Medicare Extra Help (Low Income Subsidy)",
+    category: "healthcare",
+    type: "federal",
+    description: "Federal program that pays most or all of Medicare Part D (prescription drug) costs for people with limited income and resources. Can save $5,000 or more per year on prescriptions.",
+    amount: "Saves up to $5,000+ per year on Part D costs. Covers most premiums, deductibles, and copays for prescription drugs.",
+    nuances: [
+      "Income limit (2026): ≤$22,590/year for individuals ($1,883/mo); ≤$30,660/year for married couples.",
+      "Asset limit (2026): ≤$17,220 for individuals; ≤$34,360 for married couples. Home, car, life insurance, and personal possessions do not count.",
+      "If you already receive full Medicaid, SSI, or Medicare Savings Programs — you are automatically enrolled in Extra Help.",
+      "Extra Help reduces or eliminates: Part D monthly premiums, annual deductibles, and prescription copays.",
+      "Copays with Extra Help: $4.90 for generics, $12.15 for brand-name drugs (2026).",
+      "If you miss the Initial Enrollment Period for Part D without Extra Help, you face a late enrollment penalty — Extra Help removes this penalty.",
+      "Apply anytime — no annual enrollment period for Extra Help itself.",
+      "SSA processes Extra Help applications — apply separately from Part D enrollment.",
+      "Maryland Medicaid-enrolled individuals who are also on Medicare are typically 'dual eligible' and get Extra Help automatically."
+    ],
+    how_to_apply: "Apply online at ssa.gov/extrahelp, call 1-800-772-1213 (TTY 1-800-325-0778), or visit your local Social Security office.",
+    apply_url: "https://www.ssa.gov/extrahelp",
+    source: "ssa.gov — verified March 2026",
+    eligibility: (a) =>
+      a.age >= 65 || a.has_ssdi || a.has_medicare,
+  },
+
+  {
+    id: "needymeds",
+    name: "NeedyMeds — Prescription & Medical Cost Assistance",
+    category: "healthcare",
+    type: "nonprofit",
+    description: "Free national database and navigator connecting patients to prescription drug patient assistance programs (PAPs), disease-specific funds, free/low-cost clinics in Maryland, and drug discount cards. Serves any diagnosis.",
+    amount: "NeedyMeds itself is free. Programs in their database range from free medications to significant cost reductions — varies by program and drug.",
+    nuances: [
+      "Not a direct funder — NeedyMeds is a database and referral service. They connect you to the right program for your specific medication or condition.",
+      "Drug Discount Card: NeedyMeds offers a free drug discount card that can reduce costs at participating pharmacies — available to anyone, no eligibility required.",
+      "PAP database: covers thousands of brand-name and generic medications from hundreds of manufacturers — many provide free medications to qualified patients.",
+      "Maryland free clinic directory: NeedyMeds maintains a searchable directory of free and sliding-scale clinics in Maryland.",
+      "Useful when: your insurance doesn't cover a drug, you're in a coverage gap, you're waiting for Medicaid approval, or your PAN/HealthWell fund is closed.",
+      "No income requirement to use the database — individual programs set their own income limits."
+    ],
+    how_to_apply: "Search at needymeds.org or call 800-503-6897. Free drug discount card: available immediately at needymeds.org/drugcard.",
+    apply_url: "https://www.needymeds.org/",
+    source: "needymeds.org — verified March 2026",
+    eligibility: (a) =>
+      a.is_maryland_resident,
+  },
+
   // ─── NONPROFIT & ADVOCACY ORGANIZATIONS ──────────────────────────────────
 
   {
