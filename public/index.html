@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareNavigator MD — Maryland Disability Benefits Finder</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">⚕️</span>
+        <span>CareNavigator <strong>MD</strong></span>
+      </div>
+      <nav>
+        <a href="#assessment">Find Benefits</a>
+        <a href="#programs">All Programs</a>
+        <a href="tel:211" class="btn-nav">Call 2-1-1</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-inner">
+        <p class="hero-eyebrow">Free · Private · Maryland-Specific</p>
+        <h1>Find Disability Benefits<br>You Qualify For in Maryland</h1>
+        <p class="hero-sub">Answer a few questions. Get matched to state, federal, and nonprofit programs — instantly. Nothing is stored or shared.</p>
+        <div class="hero-cta">
+          <a href="#assessment" class="btn-primary">Start Free Assessment</a>
+          <a href="#programs" class="btn-secondary">Browse All Programs</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><strong>28+</strong><span>Programs Screened</span></div>
+          <div class="stat"><strong>15</strong><span>Benefit Categories</span></div>
+          <div class="stat"><strong>100%</strong><span>Free & Private</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ASSESSMENT -->
+    <section class="section" id="assessment">
+      <div class="container">
+        <h2>Find Your Benefits</h2>
+        <p class="section-sub">Your answers stay in your browser — we never see or store them.</p>
+
+        <div class="assessment-card">
+          <!-- Progress -->
+          <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+          <p class="progress-label" id="progress-label">Step 1 of 8</p>
+
+          <form id="assessment-form">
+
+            <!-- Step 1: Residency -->
+            <div class="step active" data-step="1">
+              <h3>Are you a Maryland resident?</h3>
+              <div class="options">
+                <label class="option"><input type="radio" name="maryland_resident" value="yes" required /> Yes, I live in Maryland</label>
+                <label class="option"><input type="radio" name="maryland_resident" value="no" /> No</label>
+              </div>
+              <div class="not-resident-msg hidden" id="not-resident-msg">
+                <p>This tool is specific to Maryland. For other states, visit <a href="https://benefits.gov" target="_blank">benefits.gov</a>.</p>
+              </div>
+            </div>
+
+            <!-- Step 2: Age -->
+            <div class="step" data-step="2">
+              <h3>How old are you?</h3>
+              <input type="number" id="age" name="age" min="0" max="120" placeholder="Enter your age" class="text-input" />
+            </div>
+
+            <!-- Step 3: Disability -->
+            <div class="step" data-step="3">
+              <h3>Do you have a disability, chronic illness, or condition that limits your ability to work or perform daily activities?</h3>
+              <div class="options">
+                <label class="option"><input type="radio" name="has_disability" value="yes" required /> Yes</label>
+                <label class="option"><input type="radio" name="has_disability" value="no" /> No</label>
+              </div>
+              <div class="sub-question hidden" id="disability-type-q">
+                <p>What type of disability? <em>(Select all that apply)</em></p>
+                <label class="checkbox"><input type="checkbox" name="physical_disability" /> Physical / mobility impairment</label>
+                <label class="checkbox"><input type="checkbox" name="developmental_disability" /> Intellectual or developmental disability (IDD)</label>
+                <label class="checkbox"><input type="checkbox" name="mental_health" /> Mental health condition</label>
+                <label class="checkbox"><input type="checkbox" name="vision_loss" /> Vision loss or blindness</label>
+                <label class="checkbox"><input type="checkbox" name="hearing_loss" /> Hearing loss or deafness</label>
+                <label class="checkbox"><input type="checkbox" name="chronic_illness" /> Chronic illness (cancer, MS, diabetes, etc.)</label>
+                <label class="checkbox"><input type="checkbox" name="als" /> ALS (Lou Gehrig's Disease)</label>
+                <label class="checkbox"><input type="checkbox" name="esrd" /> End-Stage Renal Disease (ESRD)</label>
+              </div>
+            </div>
+
+            <!-- Step 4: Work history -->
+            <div class="step" data-step="4">
+              <h3>Have you worked and paid Social Security taxes for at least 5 of the last 10 years?</h3>
+              <p class="step-hint">This determines eligibility for SSDI vs. SSI.</p>
+              <div class="options">
+                <label class="option"><input type="radio" name="work_history" value="yes" required /> Yes</label>
+                <label class="option"><input type="radio" name="work_history" value="no" /> No or unsure</label>
+              </div>
+              <div class="sub-question" style="margin-top:1rem;">
+                <p>Are you currently working?</p>
+                <div class="options">
+                  <label class="option"><input type="radio" name="currently_working" value="yes" /> Yes, full-time or close to it</label>
+                  <label class="option"><input type="radio" name="currently_working" value="no" /> No / part-time / limited capacity</label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 5: Income -->
+            <div class="step" data-step="5">
+              <h3>What is your approximate total monthly household income?</h3>
+              <p class="step-hint">Include wages, benefits, and any other sources. Enter 0 if none.</p>
+              <input type="number" id="income" name="income" min="0" placeholder="Monthly income in dollars" class="text-input" />
+              <div style="margin-top:1rem;">
+                <label for="household_size" class="field-label">Household size (including yourself)</label>
+                <input type="number" id="household_size" name="household_size" min="1" max="20" value="1" class="text-input small" />
+              </div>
+            </div>
+
+            <!-- Step 6: Assets -->
+            <div class="step" data-step="6">
+              <h3>What is your approximate total countable assets?</h3>
+              <p class="step-hint">Include checking/savings accounts, investments. Exclude your home and one vehicle.</p>
+              <div class="options">
+                <label class="option"><input type="radio" name="assets" value="under2000" required /> Under $2,000</label>
+                <label class="option"><input type="radio" name="assets" value="2000to4500" /> $2,000–$4,500</label>
+                <label class="option"><input type="radio" name="assets" value="over4500" /> Over $4,500</label>
+              </div>
+            </div>
+
+            <!-- Step 7: Living situation -->
+            <div class="step" data-step="7">
+              <h3>What is your current living situation?</h3>
+              <div class="options">
+                <label class="option"><input type="radio" name="housing_status" value="renting" required /> Renting</label>
+                <label class="option"><input type="radio" name="housing_status" value="homeowner" /> Homeowner</label>
+                <label class="option"><input type="radio" name="housing_status" value="with_family" /> Living with family/others</label>
+                <label class="option"><input type="radio" name="housing_status" value="transitional" /> Transitional / shelter / at risk of homelessness</label>
+              </div>
+              <div style="margin-top:1rem;">
+                <label class="checkbox"><input type="checkbox" name="has_housing_voucher" /> I currently have a Section 8 / Housing Choice Voucher</label>
+                <label class="checkbox"><input type="checkbox" name="needs_assisted_living" /> I need or am considering assisted living</label>
+              </div>
+            </div>
+
+            <!-- Step 8: Additional needs -->
+            <div class="step" data-step="8">
+              <h3>Which of the following apply to you? <em>(Select all that apply)</em></h3>
+              <label class="checkbox"><input type="checkbox" name="has_children" /> I have children under 19</label>
+              <label class="checkbox"><input type="checkbox" name="needs_daily_care" /> I need help with daily activities (bathing, dressing, eating)</label>
+              <label class="checkbox"><input type="checkbox" name="needs_transportation" /> I need transportation assistance</label>
+              <label class="checkbox"><input type="checkbox" name="wants_to_work" /> I want help finding or keeping a job</label>
+              <label class="checkbox"><input type="checkbox" name="no_insurance" /> I do not have health insurance</label>
+              <label class="checkbox"><input type="checkbox" name="has_ssdi" /> I currently receive SSDI</label>
+              <label class="checkbox"><input type="checkbox" name="has_ssi" /> I currently receive SSI</label>
+              <label class="checkbox"><input type="checkbox" name="disability_before_26" /> My disability began before age 26</label>
+            </div>
+
+          </form>
+
+          <div class="step-nav">
+            <button class="btn-back hidden" id="btn-back">← Back</button>
+            <button class="btn-next" id="btn-next">Next →</button>
+            <button class="btn-submit hidden" id="btn-submit">Find My Benefits →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section class="section hidden" id="results-section">
+      <div class="container">
+        <h2>Your Matched Benefits</h2>
+        <p class="section-sub" id="results-intro"></p>
+        <div class="results-grid" id="results-grid"></div>
+        <div class="results-footer">
+          <p>These results are for informational purposes only. Eligibility is determined by the administering agency. For personalized help, call <strong>2-1-1</strong>.</p>
+          <button class="btn-secondary" id="btn-restart">Start Over</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ALL PROGRAMS -->
+    <section class="section alt-bg" id="programs">
+      <div class="container">
+        <h2>All Maryland Programs</h2>
+        <p class="section-sub">Browse all 28+ benefit programs. Filter by category.</p>
+        <div class="filter-bar" id="filter-bar"></div>
+        <div class="programs-grid" id="programs-grid"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p><strong>CareNavigator MD</strong> is an independent, non-governmental tool. It does not store any personal data. For official assistance, contact <a href="https://211md.org" target="_blank">211 Maryland</a> or <a href="https://dhs.maryland.gov" target="_blank">Maryland DHS</a>.</p>
+      <p style="margin-top:0.5rem; font-size:0.8rem; opacity:0.6;">Last updated March 2026. Benefit amounts and eligibility rules may change. Always verify with the administering agency.</p>
+    </div>
+  </footer>
+
+  <script src="data/benefits.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
