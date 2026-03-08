@@ -70,7 +70,7 @@ const BENEFITS = [
     category: "healthcare",
     type: "federal",
     description: "Federal health insurance for SSDI recipients (after a 24-month waiting period), adults 65+, and people with ALS (immediate) or End-Stage Renal Disease (ESRD). Covers hospital stays, doctor visits, and prescriptions.",
-    amount: "Comprehensive coverage. Part B standard premium: ~$185/mo (2025). Part A: free if you have sufficient work history.",
+    amount: "Comprehensive coverage. Part B standard premium: $185.00/mo (2026). Part A: free if you have sufficient work history.",
     nuances: [
       "SSDI recipients must wait 24 months before Medicare coverage begins — plan for this gap.",
       "ALS (Lou Gehrig's Disease): Medicare begins the same month SSDI benefits start — no waiting period.",
@@ -96,7 +96,7 @@ const BENEFITS = [
     category: "food",
     type: "federal",
     description: "Monthly food benefits loaded onto an EBT card for purchasing groceries. Maryland households with a disabled or elderly member receive significantly more favorable eligibility rules than the general population.",
-    amount: "Average ~$292/mo per person; maximum $975/mo for a family of 4 (2025).",
+    amount: "Average ~$292/mo per person; maximum $975/mo for a family of 4 (FY2026, effective October 2025).",
     nuances: [
       "Disabled/elderly households: Only net income limit applies (no gross income test). Net income limit is 100% FPL.",
       "Disabled/elderly asset limit: $4,500 (higher than standard $3,000).",
@@ -267,7 +267,7 @@ const BENEFITS = [
     description: "Medicaid waiver funding home and community-based care for adults 65+ or adults 18+ with physical disabilities who are at risk of nursing home placement. Allows people to receive care at home or in assisted living instead of a nursing facility.",
     amount: "In-home and community-based services — value varies widely based on assessed need and care plan.",
     nuances: [
-      "Income limit: $2,901/mo (single applicant, 2025 — updates in January each year at 300% of Federal Benefit Rate).",
+      "Income limit: $2,982/mo (single applicant, 2026 — 300% of the SSI Federal Benefit Rate, updated January 2026).",
       "Asset limit: $2,000 (single). For married couples where only one spouse applies: non-applicant spouse retains a 'Community Spouse Resource Allowance' of 50% of joint assets up to $157,920.",
       "Home equity limit: $730,000 — your home is exempt if you live there, if a spouse lives there, or if a dependent child lives there.",
       "60-month (5-year) look-back: Assets cannot be given away or sold below market value within 5 years of applying — penalties apply.",
@@ -285,7 +285,7 @@ const BENEFITS = [
     eligibility: (a) =>
       a.is_maryland_resident &&
       (a.age >= 65 || (a.age >= 18 && a.has_physical_disability)) &&
-      a.income_monthly <= 2901 &&
+      a.income_monthly <= 2982 &&
       a.assets <= 2000 &&
       a.needs_daily_living_assistance,
   },
@@ -552,7 +552,7 @@ const BENEFITS = [
       "Age requirement: 22 to 64 years old.",
       "Brain injury must have been acquired (not congenital) and sustained after age 17.",
       "Covered conditions: traumatic brain injury (TBI), stroke, anoxic/hypoxic brain injury, brain tumor complications, and other acquired brain injuries resulting in cognitive, physical, behavioral, or emotional disability.",
-      "Income limit: ≤$2,742/month (300% of SSI Federal Benefit Rate).",
+      "Income limit: ≤$2,982/month (300% of SSI Federal Benefit Rate, updated January 2026).",
       "Asset limit: ≤$2,000.",
       "Medical requirement: must require nursing facility or chronic hospital level of care; medical conditions must be chronic, predictable, stable, and routine.",
       "Six covered services: (1) Residential Habilitation — 24-hour supervised group home, 1:3 staff ratio; (2) Day Habilitation — skill-building in community settings; (3) Supported Employment — job training and ongoing supervision; (4) Medical Day Care — health-supervised ambulatory services; (5) Individual Support Services — community participation assistance; (6) Case Management — coordination of all services.",
@@ -567,7 +567,7 @@ const BENEFITS = [
       a.is_maryland_resident &&
       a.age >= 22 && a.age <= 64 &&
       a.has_brain_injury &&
-      a.income_monthly <= 2742 &&
+      a.income_monthly <= 2982 &&
       a.assets <= 2000 &&
       a.needs_daily_living_assistance,
   },
@@ -607,7 +607,7 @@ const BENEFITS = [
     category: "income",
     type: "federal",
     description: "Monthly tax-free payments for veterans with service-connected disabilities. Rating from 0–100% determines payment amount. Maryland does not tax VA disability compensation — it is fully state tax-exempt.",
-    amount: "2025 monthly rates: 10% = $175.51; 30% = $508.05; 50% = $1,075.16; 70% = $1,716.28; 100% = $3,831.30. Rates increase with dependents.",
+    amount: "2026 monthly rates (effective Dec 1, 2025): 10% ≈ $179.90; 30% ≈ $520.75; 50% ≈ $1,102.04; 70% ≈ $1,759.19; 100% ≈ $3,927.08. Rates increase with dependents. Verify exact rates at va.gov/disability/compensation-rates/.",
     nuances: [
       "Disability must be connected to military service — injury, illness, or condition that began or worsened during active duty.",
       "Rating is based on VA Schedule for Rating Disabilities (VASRD). Multiple ratings are combined using the 'whole person' method.",
@@ -690,7 +690,7 @@ const BENEFITS = [
       "Must be a Maryland resident.",
       "Services: skilled nursing care, assisted living, memory care, physical/occupational/speech therapy, social services, recreational programs.",
       "Veterans rated 70%+ with a service-connected disability are entitled to nursing home care at VA expense under the Veterans Millennium Healthcare Act.",
-      "VA per diem rate for nursing home care: $148.71/day as of October 1, 2025 ($4,535.66/month).",
+      "VA per diem rate for nursing home care: $148.71/day (as of October 1, 2025; verify 2026 rate at va.gov).",
       "For veterans not at 70%+ service-connected: cost is income-based; Medicaid may be accepted.",
       "Spouses of eligible veterans may also be admitted.",
       "Located in Charlotte Hall, MD (Southern Maryland). The only state-veterans-specific long-term care facility in Maryland."
@@ -897,6 +897,266 @@ const BENEFITS = [
     source: "needymeds.org — verified March 2026",
     eligibility: (a) =>
       a.is_maryland_resident,
+  },
+
+  // ─── MARYLAND-SPECIFIC DISEASE & POPULATION PROGRAMS ─────────────────────
+
+  {
+    id: "maryland_cancer_fund",
+    name: "Maryland Cancer Fund (MCF)",
+    category: "healthcare",
+    type: "state",
+    description: "Maryland state fund providing cancer treatment grants to uninsured and underinsured low-income Maryland residents. Covers surgery, chemotherapy, radiation, imaging, lab work, medications, home health, and medical equipment. Administered through local health departments.",
+    amount: "Up to $20,000 per patient per year for direct cancer treatment. Up to $10,000 per year for insurance premiums, deductibles, co-insurance, and copays. No restriction on cancer type.",
+    nuances: [
+      "Must be a Maryland resident for at least 6 months.",
+      "Designed for uninsured and underinsured patients — not for those with full coverage.",
+      "All cancer types are covered — no diagnosis exclusions.",
+      "You do NOT need to have been a client of a health department screening program to qualify.",
+      "Eligible services: surgery, chemotherapy, radiation therapy, hormonal therapy, biopsy, imaging, laboratory testing, home health services, and medical supplies/equipment.",
+      "Also covers health insurance premiums, deductibles, co-insurance, and copays for up to 1 year.",
+      "Applications are submitted through local health departments and authorized vendors — you cannot apply directly to the state fund.",
+      "Contact your county health department or call 410-767-6213 to start the process.",
+      "Income limits are set locally — contact your local health department for current thresholds."
+    ],
+    how_to_apply: "Contact your county's local health department. Call the Maryland Cancer Fund at 410-767-6213 to find the authorized vendor in your area.",
+    apply_url: "https://health.maryland.gov/phpa/cancer/Pages/Maryland-Cancer-Fund.aspx",
+    source: "health.maryland.gov/phpa/cancer — verified March 2026",
+    eligibility: (a) =>
+      a.is_maryland_resident &&
+      a.has_cancer &&
+      (!a.has_insurance || a.income_monthly <= 3500),
+  },
+
+  {
+    id: "maryland_hospital_charity_care",
+    name: "Maryland Hospital Charity Care (SB981 — 2025 Law)",
+    category: "healthcare",
+    type: "state",
+    description: "Maryland law (SB981, signed May 2025) requires all acute care hospitals in Maryland to provide free care to patients at or below 200% FPL, and sliding-scale discounts for patients up to 500% FPL. Applies to all medically necessary services at any Maryland acute hospital.",
+    amount: "Free care (100% discount) at ≤200% FPL. Sliding-scale reduction up to 500% FPL. No dollar cap on the discount.",
+    nuances: [
+      "Effective May 2025 — this is a new law requiring standardized charity care statewide.",
+      "Applies to ALL Maryland acute care hospitals — over 60 hospitals statewide.",
+      "At or below 200% FPL (~$30,120/year for a single person in 2026): all medically necessary care is FREE.",
+      "200%–500% FPL: proportional sliding-scale discounts — exact percentage varies by hospital policy.",
+      "Must apply for financial assistance — it is not automatic. Ask for a Financial Assistance Application at any Maryland hospital registration or billing office.",
+      "Hospitals cannot file lawsuits, garnish wages, or place liens on patients with outstanding balances of $500 or less.",
+      "Legal action must wait at least 240 days (up from 180) after the initial bill.",
+      "Each hospital has its own financial assistance application — apply directly to the hospital where you received care.",
+      "Johns Hopkins: call 443-997-3067 (M–F 8:30am–4:30pm). UMMS: call their financial counseling office.",
+      "HSCRC (Health Services Cost Review Commission) oversees and enforces compliance with charity care requirements.",
+      "This applies regardless of disability status — all patients qualifying by income are covered."
+    ],
+    how_to_apply: "Ask for a Financial Assistance Application at any Maryland hospital's billing or patient financial services office. Coverage applies retroactively to services received — apply even after discharge.",
+    apply_url: "https://hscrc.maryland.gov/Pages/pdr_generalinfo.aspx",
+    source: "Maryland SB981 (signed May 2025), hscrc.maryland.gov — verified March 2026",
+    eligibility: (a) =>
+      a.is_maryland_resident &&
+      a.income_monthly <= 4165, // 500% FPL for 1 person (approximate 2026)
+  },
+
+  {
+    id: "liss_dda",
+    name: "DDA Low Intensity Support Services (LISS)",
+    category: "grants",
+    type: "state",
+    description: "Maryland DDA program providing up to $1,000 grants to children and adults with developmental or intellectual disabilities who are NOT currently receiving DDA waiver services. Awarded via random selection lottery — no income test.",
+    amount: "$1,000 per household per application round.",
+    nuances: [
+      "Must have a developmental or intellectual disability (DDA-eligible diagnosis).",
+      "Must NOT be currently receiving DDA waiver-funded services — this is specifically for people still waiting or not yet in the waiver system.",
+      "Children must be living at home with family. Adults must be living at home or independently in the community.",
+      "Applicants on the DDA waiting list who receive only Coordination of Community Services (CCS) are eligible.",
+      "Awards are made by random selection lottery — not first-come-first-served, not income-based.",
+      "FY2026 Round 1: Applications open July 14, 2025; close September 15, 2025; lottery September 30, 2025.",
+      "Multiple rounds per fiscal year — check health.maryland.gov/dda/pages/liss.aspx for current round dates.",
+      "Managed by two regional providers: Maryland Community Connection (301-583-8880 / 877-622-6688) and Penn-Mar Human Services (877-282-8202).",
+      "Email questions to: [email protected]"
+    ],
+    how_to_apply: "Apply online at pcis.health.maryland.gov/liss-service/apply during open application rounds. Contact Maryland Community Connection: 877-622-6688 or Penn-Mar: 877-282-8202.",
+    apply_url: "https://health.maryland.gov/dda/pages/liss.aspx",
+    source: "health.maryland.gov/dda — verified March 2026",
+    eligibility: (a) =>
+      a.is_maryland_resident &&
+      (a.has_developmental_disability || a.has_intellectual_disability),
+  },
+
+  {
+    id: "mdtap_at_loan",
+    name: "Maryland AT Loan Program (MDTAP) — Assistive Technology",
+    category: "assistive_tech",
+    type: "state",
+    description: "Low-interest loans from $500 to $70,000 for Maryland residents with disabilities to purchase assistive technology, home modifications, and adapted vehicles. Below-market fixed interest rates. Less stringent than traditional bank loans.",
+    amount: "Unsecured AT: up to $10,000. Home/vehicle modifications (unsecured): up to $20,000. Non-adapted vehicles: up to $40,000. Adapted vehicles: up to $70,000. Rates are below-market and fixed.",
+    nuances: [
+      "Must be a Maryland resident with a disability, OR someone purchasing AT for a Maryland resident with a disability (family member, employer, etc.).",
+      "Must demonstrate ability to repay — but criteria are less strict than traditional banks.",
+      "Qualifying items: wheelchairs (manual and power), scooters, home modifications (ramps, lifts, grab bars), adapted vehicles, hearing aids, Braille equipment, augmentative communication devices, computers with adaptive peripherals, environmental control units, and more.",
+      "SECU Credit Union also offers Assistive Technology Loans as part of this program — check secumd.org.",
+      "Interest rates are fixed at time of loan origination and vary by creditworthiness.",
+      "Can be combined with grant programs (like CHAMP or SFHRP) to cover what loans don't.",
+      "Apply online at onestop.md.gov or call 800-832-4827.",
+      "Administered by the Maryland Department of Disabilities (MDOD)."
+    ],
+    how_to_apply: "Apply online at onestop.md.gov (search 'Assistive Technology Loan') or call MDTAP at 800-832-4827. Administered by MDOD: mdod.maryland.gov/mdtap.",
+    apply_url: "https://mdod.maryland.gov/mdtap/Pages/ATlowloan.aspx",
+    source: "mdod.maryland.gov/mdtap — verified March 2026",
+    eligibility: (a) =>
+      a.is_maryland_resident &&
+      a.has_disability,
+  },
+
+  {
+    id: "autism_society_md_madhu",
+    name: "Autism Society of Maryland — Madhu Fund Emergency Grants",
+    category: "emergency",
+    type: "nonprofit",
+    description: "Emergency micro-grants for Maryland households with one or more Autistic members experiencing financial hardship. Covers a wide range of urgent needs from rent and utilities to autism-related technology and medical supplies.",
+    amount: "Up to $250 per household. Awarded throughout the year as funds are available.",
+    nuances: [
+      "Must have at least one Autistic household member.",
+      "No stated income limit — based on demonstrated financial hardship.",
+      "Covered expenses: rent, utilities, car repairs, food, personal care items (clothing, hygiene), household supplies, baby supplies (diapers, formula), medical supplies, school supplies, emergency respite care, autism-related technology, and moving expenses.",
+      "Funds are limited — may be exhausted at times during the year (as occurred in mid-2025).",
+      "Download the application from autismsocietymd.org or email info@autismsocietymd.org.",
+      "Contact: 410-290-3466.",
+      "Pathfinders for Autism (pathfindersforautism.org) is Maryland's largest autism organization — they provide free resources, trainings, a provider database, and the Help Line at 443-330-5341 — a strong companion resource."
+    ],
+    how_to_apply: "Download application at autismsocietymd.org/madhu-fund-emergency-grants or email info@autismsocietymd.org. Call 410-290-3466.",
+    apply_url: "https://autismsocietymd.org/madhu-fund-emergency-grants/",
+    source: "autismsocietymd.org — verified March 2026",
+    eligibility: (a) =>
+      a.is_maryland_resident &&
+      a.has_autism,
+  },
+
+  // ─── NATIONAL DISEASE FOUNDATIONS (SERVING MARYLAND RESIDENTS) ────────────
+
+  {
+    id: "cancercare_copay",
+    name: "CancerCare Co-Payment Assistance Foundation",
+    category: "grants",
+    type: "nonprofit",
+    description: "Helps people with cancer pay treatment-related co-payments for chemotherapy, targeted therapy, immunotherapy, and other cancer medications. Also provides separate transportation, home care, and child care assistance grants. Income up to 500% FPL.",
+    amount: "Co-pay grants: typically $2,500–$5,000/year per patient; annual limits $5,000–$10,000 depending on cancer type. Separate transportation/home care/child care grants also available.",
+    nuances: [
+      "Income limit: at or below 500% of the Federal Poverty Level (~$75,000/year for a single person in 2026).",
+      "Must have health insurance that covers your cancer medication — insurance is required.",
+      "Grant amounts vary by cancer type — each fund has a different limit.",
+      "Cancer types with active funds include: breast, colorectal, head and neck, lung, pancreatic, renal cell, bladder, prostate, small cell lung, bile duct/cholangiocarcinoma, and others.",
+      "If your cancer type fund is not currently open or funded, CancerCare connects you to other patient assistance programs.",
+      "Approval takes 2–3 weeks.",
+      "Separate Financial Assistance Program (not co-pay): grants for transportation to treatment, home care, and child care costs — call 800-813-HOPE (4673) to apply.",
+      "Also provides free professional counseling, support groups, and social work services.",
+      "Apply online or call: 866-55-COPAY (866-552-6729) or email info@cancercarecopay.org."
+    ],
+    how_to_apply: "Apply online at portal.cancercarecopay.org or call 866-552-6729. For transportation/home care grants: call 800-813-4673.",
+    apply_url: "https://www.cancercare.org/copayfoundation",
+    source: "cancercare.org — verified March 2026",
+    eligibility: (a) =>
+      a.has_cancer &&
+      a.has_insurance &&
+      a.income_monthly <= 6200,
+  },
+
+  {
+    id: "lls_financial",
+    name: "Leukemia & Lymphoma Society (LLS) — Patient Financial Aid",
+    category: "grants",
+    type: "nonprofit",
+    description: "Financial assistance for blood cancer patients (leukemia, lymphoma, Hodgkin's, myeloma, MDS, and related diseases). Covers non-medical living expenses and treatment copays. Now operating as Blood Cancer United.",
+    amount: "Co-Pay Assistance: up to $2,500/year for insurance premiums, copays, and treatment travel. Financial Aid grants: up to $2,500 one-time for non-medical expenses (rent, utilities, food, childcare, elder care, transportation). Disease-specific funds: AML up to $4,000; CLL up to $4,500.",
+    nuances: [
+      "Eligible diagnoses: all forms of leukemia, Hodgkin's and non-Hodgkin's lymphoma, myeloma, myelodysplastic syndromes (MDS), myeloproliferative neoplasms (MPN), Waldenström's macroglobulinemia, and related blood cancers.",
+      "Non-medical expenses covered: rent, mortgage, lodging, utilities, childcare, elder care, food, transportation, car repair, car insurance, phone service, and acute dental work related to treatment.",
+      "Co-pay program covers: insurance premiums, co-insurance, prescription drug copays, and treatment-related travel up to $2,500/year.",
+      "Disease-specific funds have higher limits — AML patients may receive up to $4,000; CLL up to $4,500.",
+      "Income limits apply — verify current thresholds when applying.",
+      "One-time $100 stipend available to blood cancer patients for immediate non-medical needs.",
+      "Also provides free information specialists, clinical trial navigation, and peer support.",
+      "Contact LLS: 1-800-955-4572 or visit lls.org/support-resources/financial-support."
+    ],
+    how_to_apply: "Apply at lls.org/support-resources/financial-support or call 1-800-955-4572. Information Specialists available M–F 9am–9pm ET.",
+    apply_url: "https://www.lls.org/support-resources/financial-support",
+    source: "lls.org — verified March 2026",
+    eligibility: (a) =>
+      a.has_blood_cancer,
+  },
+
+  {
+    id: "patient_advocate_foundation",
+    name: "Patient Advocate Foundation (PAF) — Financial Aid Funds",
+    category: "grants",
+    type: "nonprofit",
+    description: "Disease-specific financial aid grants for patients with chronic, life-threatening, or debilitating illnesses. Over 130 disease funds through the TotalAssist program. Covers out-of-pocket medical expenses, transportation, housing, and utilities.",
+    amount: "Varies by disease fund. Examples: cancer continuity fund $200 one-time; caregiver support fund $2,000; amputee fund $1,000. Most funds provide $500–$3,000 grants. All grants are distributed first-come, first-served until funds are depleted.",
+    nuances: [
+      "Over 130 disease-specific funds through TotalAssist (launched 2025) — one of the largest patient financial aid programs in the country.",
+      "Eligible diagnoses include: cancer (many types), heart disease, HIV/AIDS, diabetes complications, rare diseases, neurological conditions, autoimmune disorders, and many others.",
+      "Must meet household income guidelines — varies by fund.",
+      "Must provide diagnosis documentation from a physician.",
+      "Grants are first-come, first-served and may be depleted — check fund status before applying.",
+      "Also provides free case management services to help patients navigate insurance denials, access to care issues, and appeals — no income requirement for case management.",
+      "National Financial Resource Directory: PAF maintains a free searchable database of financial resources at patientadvocate.org.",
+      "Also connects patients to diabetes copay assistance through partnership with American Diabetes Association.",
+      "Apply: patientadvocate.org or call 844-462-8072 or 855-824-7941."
+    ],
+    how_to_apply: "Apply at patientadvocate.org/connect-with-services/financial-aid-funds or call 844-462-8072. Case management: call 855-824-7941.",
+    apply_url: "https://www.patientadvocate.org/connect-with-services/financial-aid-funds/",
+    source: "patientadvocate.org — verified March 2026",
+    eligibility: (a) =>
+      a.has_disability &&
+      a.is_maryland_resident,
+  },
+
+  {
+    id: "pan_parkinsons",
+    name: "PAN Foundation — Parkinson's Disease Copay Assistance",
+    category: "grants",
+    type: "nonprofit",
+    description: "Annual medication copay assistance for people living with Parkinson's disease who need help affording their prescribed medications. HealthWell Foundation also offers a complementary Parkinson's Medicare assistance fund.",
+    amount: "PAN Foundation Parkinson's fund: up to $4,400/year for medication copays. HealthWell Foundation Parkinson's fund: up to $4,000/year for Medicare patients (medication copays or Part B premiums).",
+    nuances: [
+      "PAN Foundation: must have health insurance covering your Parkinson's medication, income within fund limits (varies — check panfoundation.org/disease-funds/parkinsons-disease).",
+      "HealthWell Parkinson's fund: designed specifically for Medicare patients; covers medication copays and Medicare Part B premium assistance.",
+      "Both programs are national and serve Maryland residents.",
+      "American Parkinson Disease Association (APDA) also provides information and referrals; APDA Maryland chapter: 410-683-5711.",
+      "Parkinson's Foundation HelpLine: 1-800-4PD-INFO (1-800-473-4636) — connects patients to local resources and assistance navigation.",
+      "If PAN or HealthWell Parkinson's funds are closed, also check NeedyMeds.org for manufacturer patient assistance programs for specific Parkinson's medications."
+    ],
+    how_to_apply: "PAN: panfoundation.org/disease-funds/parkinsons-disease or call 1-866-316-7263. HealthWell: healthwellfoundation.org or call 800-675-8416. APDA Maryland: 410-683-5711.",
+    apply_url: "https://www.panfoundation.org/disease-funds/parkinsons-disease/",
+    source: "panfoundation.org, healthwellfoundation.org — verified March 2026",
+    eligibility: (a) =>
+      a.is_maryland_resident &&
+      a.has_parkinsons,
+  },
+
+  {
+    id: "nfb_maryland_scholarship",
+    name: "NFB Maryland — McCraw Scholarship & Support Services",
+    category: "grants",
+    type: "nonprofit",
+    description: "The National Federation of the Blind of Maryland awards annual scholarships for blind and visually impaired students, plus statewide advocacy, peer support, and connections to blindness-specific resources.",
+    amount: "John T. McCraw Scholarship: up to $4,000 each (up to 4 awarded annually). National NFB scholarships: thirty $10,000 merit-based scholarships nationally.",
+    nuances: [
+      "McCraw Scholarship eligibility: must reside in Maryland or attend a post-secondary institution in Maryland; must be enrolled full-time or part-time; must have a visual impairment or blindness.",
+      "Deadline: March 31 annually for the following academic year (e.g., March 31, 2026 for 2026–2027).",
+      "Recipients are required to attend the NFB Maryland annual convention (February, in Maryland) — travel assistance provided.",
+      "National NFB scholarships ($10,000 each): 30 awarded nationally; Maryland residents compete nationally.",
+      "Sharon Maneki Youth Empowerment Grant: specialized training for middle and high school students who are blind.",
+      "Two-week summer day program for elementary students: free Braille and alternative skills training.",
+      "NFB Maryland also advocates for accessible transportation, technology, and education across Maryland.",
+      "DORS (Division of Rehabilitation Services) Office for Blindness & Vision Services (OBVS) provides separate free vocational rehabilitation services for blind/low-vision Marylanders.",
+      "Contact: NFB Maryland at nfbmd.org or 410-659-9314 ext. 2415."
+    ],
+    how_to_apply: "McCraw Scholarship: apply at nfbmd.org/scholarship. National NFB scholarships: nfb.org/scholarships. Contact: 410-659-9314 ext. 2415.",
+    apply_url: "https://nfbmd.org/",
+    source: "nfbmd.org — verified March 2026",
+    eligibility: (a) =>
+      a.is_maryland_resident &&
+      a.has_vision_loss,
   },
 
   // ─── NONPROFIT & ADVOCACY ORGANIZATIONS ──────────────────────────────────
